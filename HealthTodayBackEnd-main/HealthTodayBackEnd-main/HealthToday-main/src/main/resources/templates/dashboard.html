@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #d1b49b;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .row{
+          background-color: #ffffff;
+        }
+
+        .imagensIndex{
+          display: inline-flex;
+        }
+
+        .login-container {
+            background-color: #fbf09e;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .login-container-apresentacao {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-right: 20px;
+        }
+
+        .imageIconHealthToday, .logoIconHealthToday {
+            width: 300px;
+            margin-bottom: 10px;
+        }
+
+        .login-container h2, .login-container h3 {
+            font-family: "Raleway", sans-serif;
+            font-size: 40px;
+            font-weight: 900;
+            line-height: 1.2;
+            color: #fa9949;
+            margin: 10px 0;
+        }
+
+        .login-container-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            text-align: center;
+            flex: 1;
+        }
+
+        #signup-form {
+            margin: 20px 0;
+            font-size: 10px;
+        }
+
+        .login-container-form h4 {
+            font-family: "Raleway", sans-serif;
+            font-size: 30px;
+            font-weight: 800;
+            color: #fa9949;
+            word-break: break-word;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .return-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 20px;
+            background-color: #fa9949;
+            color: #ffffff;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            outline: none;
+            text-decoration: none;
+            margin: 10px 0px 100px 450px;
+            width: 40px;
+            font-size: 15px;
+            transition: background-color 0.3s ease;
+            font-family: "Raleway", sans-serif;
+        }
+
+        .signup-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 30px;
+            background-color: #fa9949;
+            color: #ffffff;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            outline: none;
+            text-decoration: none;
+            margin: 10px;
+            width: 250px;
+            font-size: 30px;
+            transition: background-color 0.3s ease;
+            font-family: "Raleway", sans-serif;
+        }
+
+        .signup-button img {
+            width: 60px;
+            height: 50px;
+            margin-right: 10px;
+            padding: 10px;
+        }
+
+        .return-button:hover {
+            background-color: #e09b60;
+        }
+
+        .signup-button:hover {
+            background-color: #e09b60;
+        }
+
+
+        .title {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .info-container-lembrete {
+            max-width: 700px;
+            margin: auto;
+            border: 1px solid black;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+
+        .info-container-lembrete a {
+            background-color: #F2AB9B;
+            color: white;
+            border-color: #F2AB9B;
+        }
+
+        .info-container-lembrete a:hover {
+            background-color: pink;
+            color: white;
+            border-color: pink;
+        }
+
+        #welcome-message {
+            font-size: 1.6em;
+        }
+
+        /* Ajustes para centralizar conteúdo */
+        .container {
+            margin: auto;
+            max-width: 1200px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="navbar"></div>
+<div class="mt-5">
+    <h1 id="welcome-message" class="ml-3">Seja bem-vindo, <span th:text="${username}"></span>!</h1>
+
+    <div class="container">
+        <div class="login-container">
+            <div class="login-container-apresentacao">
+                <div class="imagensIndex">
+                    <img class="imageIconHealthToday" src="icon/lettermark.png" alt="imageIconHealthToday" />
+                    <img class="logoIconHealthToday" src="icon/logo.png" alt="logoIconHealthToday" />
+                </div>
+                <div class="row">
+                  <h2 class="title">Seus lembretes:</h2>
+                  <div th:each="lembrete : ${lembretes}" class="col-md-6">
+                      <div class="info-container-lembrete">
+                          <h2 th:text="${lembrete.titulo}"></h2>
+                          <p th:text="${lembrete.descricao}"></p>
+                          <p th:text="${lembrete.dataHora}"></p>
+                          <a th:href="@{'dashboard/editar/' + ${lembrete.id}}" class="btn btn-primary float-right">Editar</a>
+                          <div class="clearfix"></div>
+                      </div>
+                  </div>
+              </div>
+            </div>
+            <div class="login-container-form">
+                <a href="index.html" class="return-button">Sair</a>
+                <form id="signup-form">
+                    <h4>Escolha uma opção para seguirmos!</h4>
+                    <div class="buttons">
+                        <a href="cardapio.html" class="signup-button">
+                            <img class="logoCardapio" src="icon\logo ht (14) 1.png" alt="logoCardapio"/> Cardápio
+                        </a>
+                        <a href="lembretes.html" class="signup-button">
+                            <img class="logoLembretes" src="icon\logo ht (14) 1.png" alt="logoLembretes"/> Lembretes
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

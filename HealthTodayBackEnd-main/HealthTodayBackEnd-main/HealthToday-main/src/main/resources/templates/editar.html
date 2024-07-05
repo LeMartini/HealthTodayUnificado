@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Editar Lembrete</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #d1b49b;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      max-width: 600px;
+      background-color: #fbf09e;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      color:  #a77246;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .form-group label {
+      font-weight: bold;
+      color:  #a77246;
+    }
+
+    .form-control {
+      border-color: #ced4da; /* Cor da borda dos inputs */
+    }
+
+    .btn-primary {
+      background-color: #fa9949;
+      border-color: #a77246;
+      color: #ffffff; /* Cor do texto do botão */
+      font-weight: bold;
+    }
+
+    .btn-primary:hover {
+      background-color: #a77246;
+      border-color: #a77246;
+    }
+
+    .btn-danger {
+      background-color: #db4857; /* Cor de fundo do botão de exclusão */
+      border-color: #4e0008; /* Cor da borda do botão de exclusão */
+      color: #ffffff; /* Cor do texto do botão de exclusão */
+      font-weight: bold;
+    }
+
+    .btn-danger:hover {
+      background-color: #c82333; /* Cor de fundo do botão de exclusão ao passar o mouse */
+      border-color: #c82333; /* Cor da borda do botão de exclusão ao passar o mouse */
+    }
+  </style>
+</head>
+
+<body>
+  <div th:replace="navbar"></div>
+
+  <div class="container mt-5">
+    <h1>Editar Lembrete</h1>
+    <form id="editForm" th:action="@{'/dashboard/editar/' + ${lembrete.id}}" method="post" onsubmit="confirmUpdate(event)">
+      <div class="form-group">
+        <label for="titulo">Título</label>
+        <input type="text" class="form-control" id="titulo" th:value="${lembrete.titulo}" name="titulo" required>
+      </div>
+      <div class="form-group">
+        <label for="descricao">Descrição</label>
+        <textarea class="form-control" id="descricao" rows="3" name="descricao" th:text="${lembrete.descricao}" required></textarea>
+      </div>
+      <div class="form-group">
+        <label for="dataHora">Data e Hora</label>
+        <input type="datetime-local" class="form-control" id="dataHora" th:value="${lembrete.dataHora}" name="dataHora" required>
+      </div>
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary w-100">Atualizar Lembrete</button>
+      </div>
+    </form>
+
+    <form id="deleteForm" th:action="@{'/dashboard/excluir/' + ${lembrete.id}}" method="post" onsubmit="confirmDelete(event)">
+      <div class="form-group">
+        <button type="submit" class="btn btn-danger w-100">Excluir</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    function confirmUpdate(event) {
+      event.preventDefault();
+      if (confirm("Você tem certeza que deseja atualizar este lembrete?")) {
+        alert("Lembrete editado com sucesso !!");
+        document.getElementById("editForm").submit();
+      }
+    }
+
+    function confirmDelete(event) {
+      event.preventDefault();
+      if (confirm("Você tem certeza que deseja excluir este lembrete?")) {
+        alert("Lembrete Excluído com sucesso !!");
+        document.getElementById("deleteForm").submit();
+      }
+    }
+  </script>
+</body>
+
+</html>
