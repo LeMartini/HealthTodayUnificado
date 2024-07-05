@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Cardápio</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <style>
+        @import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
+        body {
+            font-family: 'Raleway', sans-serif;
+            background-color: #d1b49b;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar-custom {
+            background-color: #fbf09e;
+        }
+
+        .navbar-brand {
+            color: #8b4513;
+        }
+
+        .navbar-brand img {
+            max-width: 40px;
+            margin-right: 10px;
+        }
+
+        #navbarDropdownMenuLink{
+            color: #8b4513;
+        }
+
+        .container {
+            background-color: #fbf09e;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+            width: 100%;
+            margin: auto;
+            margin-top: 20px;
+        }
+
+        .title {
+            font-size: 40px;
+            font-weight: 900;
+            color: #fa9949;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            color: #fa9949;
+        }
+
+        .form-group input {
+            padding: 10px;
+            border: 1px solid #fa9949;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .btn-primary {
+            padding: 10px 20px;
+            background-color: #fa9949;
+            color: white;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            outline: none;
+            text-decoration: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #e09b60;
+        }
+    </style>
+</head>
+<body onload="alertUser()">
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-light navbar-custom">
+            <div class="container-fluid">
+                <a class="navbar-brand" style="color: #8b4513" th:href="@{/dashboard}">
+                    <strong>HealthToday</strong>
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+                    aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                                data-toggle="dropdown" aria-expanded="false">
+                                <span th:text="${username}">Nome do usuário</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                                <li><a class="dropdown-item" th:href="@{/lembretes}">Lembretes</a></li>
+                                <li><a class="dropdown-item" th:href="@{/cardapio}">Cardapio</a></li>
+                                <li><a class="dropdown-item" th:href="@{dashboard/configuracoes}">Configurações</a></li>
+                                <li>
+                                    <form th:action="@{/dashboard/logout}" method="post">
+                                        <button class="dropdown-item" type="submit">Deslogar</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+    <div class="container">
+        <h1 class="title">Configurações</h1>
+        <form th:action="@{/usuario/(form)}" method="POST" th:object="${usuario}">
+            <input type="hidden" th:field="*{id}">
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="txtNome">Nome e Sobrenome</label>
+                    <input type="text" class="form-control" th:field="*{nome}" id="txtNome" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="txtSenha">Senha</label>
+                    <input type="text" class="form-control" th:field="*{senha}" id="txtSenha" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="txtTelefone">Telefone</label>
+                    <input type="text" class="form-control" th:field="*{Telefone}" id="txtTelefone" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="txtDataNascimento">Data de Nascimento</label>
+                    <input type="date" class="form-control" th:field="*{dataNascimento}" id="txtDataNascimento" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="txtEmail">Email</label>
+                    <input type="email" class="form-control" th:field="*{email}" id="txtEmail" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="txtEndereco">Endereço</label>
+                    <input type="text" class="form-control" th:field="*{endereco}" id="txtEndereco" required>
+                </div>
+            </div>
+
+            <div class="button-container">
+                <button type="button" class="btn btn-secondary" onclick="location.href='/login'">Voltar</button>
+                <button id="updateButton" type="submit" class="btn btn-success">Atualizar</button>
+            </div>
+        </form>
+    </div>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        function alertUser() {
+            var username = /*[[${username}]]*/ 'username';
+            alert("Caro " + username + ", caso você faça uma atualização cadastral após a confirmação das informações você será redirecionado para a página inicial de login para validar as suas alterações.");
+        }
+        /*]]>*/
+
+        document.getElementById('updateButton').addEventListener('click', function() {
+            alert('Atualizações cadastrais atualizadas com sucesso.');
+        });
+    </script>
+</body>
+</html>

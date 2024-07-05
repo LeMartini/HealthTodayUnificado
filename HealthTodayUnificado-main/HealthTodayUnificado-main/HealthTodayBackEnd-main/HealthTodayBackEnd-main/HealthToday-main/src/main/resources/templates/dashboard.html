@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Raleway', sans-serif;
+            background-color: #d1b49b;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .navbar-custom {
+            background-color: #fbf09e;
+        }
+
+        .navbar-brand {
+            color: #8b4513;
+        }
+
+        .navbar-brand img {
+            max-width: 40px;
+            margin-right: 10px;
+        }
+
+        #navbarDropdownMenuLink {
+            color: #8b4513;
+        }
+
+        .container {
+            background-color: #fbf09e;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+            margin: auto;
+            margin-top: 20px;
+        }
+
+        .title {
+            text-align: center;
+            color: #fa9949;
+            margin-bottom: 20px;
+        }
+
+        .info-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .info-container h2 {
+            font-size: 1.6em;
+            color: #fa9949;
+        }
+
+        .info-container p {
+            font-size: 1em;
+            color: #8b4513;
+        }
+
+        .info-container a {
+            background-color: #F2AB9B;
+            color: white;
+            border-color: #F2AB9B;
+        }
+
+        .info-container a:hover {
+            background-color: pink;
+            color: white;
+            border-color: pink;
+        }
+
+        #welcome-message {
+            font-size: 1.6em;
+            color: #8b4513;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light navbar-custom">
+        <div class="container-fluid">
+            <a class="navbar-brand" style="color: #8b4513" th:href="@{/dashboard}">
+                <img class="logoIconHealthToday" src="icon/logo.png" alt="logoIconHealthToday" />   
+                <strong>HealthToday</strong>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                            data-toggle="dropdown" aria-expanded="false">
+                            <span th:text="${username}">Nome do usuário</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item" th:href="@{/lembretes}">Lembretes</a></li>
+                            <li><a class="dropdown-item" th:href="@{/cardapio}">Cardapio</a></li>
+                            <li><a class="dropdown-item" th:href="@{dashboard/configuracoes}">Configurações</a></li>
+                            <li>
+                                <form th:action="@{/dashboard/logout}" method="post">
+                                    <button class="dropdown-item" type="submit">Deslogar</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 id="welcome-message">Seja bem-vindo, <span th:text="${username}"></span>!</h1>
+        <h2 class="title">Seus lembretes:</h2>
+
+        <div class="row">
+            <div th:each="lembrete : ${lembretes}" class="col-md-12">
+                <div class="info-container">
+                    <h2 th:text="${lembrete.titulo}"></h2>
+                    <p th:text="${lembrete.descricao}"></p>
+                    <p th:text="${lembrete.dataHora}"></p>
+                    <a th:href="@{'dashboard/editar/' + ${lembrete.id}}" class="btn btn-primary float-right">Editar</a>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+
+</html>

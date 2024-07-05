@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Novo lembrete</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Raleway', sans-serif;
+            background-color: #d1b49b;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar-custom {
+            background-color: #fbf09e;
+        }
+
+        .navbar-brand {
+            color: #8b4513;
+        }
+
+        .navbar-brand img {
+            max-width: 40px;
+            margin-right: 10px;
+        }
+
+        #navbarDropdownMenuLink {
+            color: #8b4513;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-container {
+            background-color: #fbf09e;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+            margin-top:10px;
+        }
+
+        .login-container h2,
+        .login-container h3 {
+            font-size: 40px;
+            font-weight: 900;
+            line-height: 1.2;
+            color: #fa9949;
+            margin: 10px 0;
+        }
+
+        .info-container {
+            max-width: 1000px;
+            width: 100%;
+            padding: 10px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #a77246;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #a77246;
+            border-radius: 5px;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #fa9949;
+            color: #ffffff;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            margin-top: 10px;
+        }
+
+        .btn-primary:hover {
+            background-color: #cb7c38;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light navbar-custom">
+        <div class="container-fluid">
+            <a class="navbar-brand" style="color: #8b4513" th:href="@{/dashboard}">
+                <img class="logoIconHealthToday" src="icon/logo.png" alt="logoIconHealthToday" />   
+                <strong>HealthToday</strong>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                            data-toggle="dropdown" aria-expanded="false">
+                            <span th:text="${username}">Nome do usuário</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item" th:href="@{/lembretes}">Lembretes</a></li>
+                            <li><a class="dropdown-item" th:href="@{/cardapio}">Cardapio</a></li>
+                            <li><a class="dropdown-item" th:href="@{dashboard/configuracoes}">Configurações</a></li>
+                            <li>
+                                <form th:action="@{/dashboard/logout}" method="post">
+                                    <button class="dropdown-item" type="submit">Deslogar</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="login-container">
+            <div class="info-container">
+                <h2>Novo lembrete</h2>
+                <form id="createForm" th:action="@{/lembretes/salvar}" th:object="${lembrete}" method="post" onsubmit="confirmCreate(event)">
+                    <div class="form-group">
+                        <label for="titulo">Título do lembrete</label>
+                        <input type="text" class="form-control" th:field="*{titulo}" id="titulo" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="descricao">Descrição</label>
+                        <textarea class="form-control" th:field="*{descricao}" id="descricao" rows="5" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="dataHora">Data e Hora</label>
+                        <input type="datetime-local" class="form-control" th:field="*{dataHora}" id="dataHora" required />
+                    </div>
+                    <div class="form-group" style="display: flex; justify-content: space-between;">
+                        <button type="button" class="btn btn-primary" onclick="location.href='/login'" style="margin-right: 10px;">
+                            Voltar
+                        </button>
+                        <button id="saveButton" type="submit" class="btn btn-primary" style="margin-left: 10px;">
+                            Criar Lembrete
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        function confirmCreate(event) {
+            event.preventDefault();
+            if (confirm("Você tem certeza que deseja criar este lembrete?")) {
+                alert("Lembrete criado com sucesso !!");
+                document.getElementById("createForm").submit();
+            }
+        }
+    </script>
+</body>
+
+</html>
